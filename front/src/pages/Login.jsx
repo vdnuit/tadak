@@ -9,33 +9,32 @@ function Login({ setIsLoggedIn }) {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("/api/user/login", {
+      const params = new URLSearchParams();
+      params.append("username", id);
+      params.append("password", password);
+
+      const response = await fetch("http://localhost:8080/api/user/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify({
-          username: id,
-          password: password,
-        }),
+        body: params,
+        credentials: "include", // ✅ 세션 쿠키 포함
       });
-  
+
       if (response.ok) {
-        // 실제 서버 응답에 따라 처리 (ex: 토큰 또는 단순 메시지)
-        // localStorage.setItem("access_token", token);  ← 추후 확장 가능
         setIsLoggedIn(true);
         alert("로그인 성공");
         navigate("/");
       } else {
         const data = await response.json();
-        alert(data.message); // ErrorResponse.message 사용
+        alert(data.message || "로그인 실패");
       }
     } catch (error) {
       console.error("로그인 요청 실패:", error);
       alert("서버 오류가 발생했습니다.");
     }
   };
-  
 
   const handleSignup = () => {
     navigate("/signup");

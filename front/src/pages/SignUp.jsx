@@ -17,7 +17,7 @@ function SignUp() {
     }
 
     try {
-      const response = await fetch("/api/user/signup", {
+      const response = await fetch("http://localhost:8080/api/user/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,6 +28,7 @@ function SignUp() {
           password2: confirmPassword,
           email: email,
         }),
+        credentials: "include", // ✅ 추가해도 부작용 없음
       });
 
       if (response.ok) {

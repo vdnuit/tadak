@@ -16,13 +16,16 @@ function Write() {
     }
 
     try {
-      const senderId = localStorage.getItem("user_id");
-
-      const response = await axios.post("/api/letters", {
-        senderId: Number(senderId),
-        title,
-        content,
-      });
+      const response = await axios.post(
+        "/api/letters",
+        {
+          title,
+          content,
+        },
+        {
+          withCredentials: true, // ✅ 세션 쿠키(JSESSIONID)를 함께 보냄
+        }
+      );
 
       console.log("편지 작성 성공:", response.data);
       alert("편지가 성공적으로 작성되었습니다.");

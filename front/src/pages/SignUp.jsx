@@ -10,17 +10,37 @@ function SignUp() {
 
   const navigate = useNavigate();
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (password !== confirmPassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
 
-    // 회원가입 API 호출 (추후 실제 서버 연동 시 사용)
-    console.log("회원가입 요청:", { id, password, email });
+    try {
+      const response = await fetch("/api/user/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: id,
+          password1: password,
+          password2: confirmPassword,
+          email: email,
+        }),
+      });
 
-    // 임시: 회원가입 후 로그인 페이지로 이동
-    navigate("/login");
+      if (response.ok) {
+        alert("회원가입이 완료되었습니다.");
+        navigate("/login");
+      } else {
+        const data = await response.json();
+        alert(data.message); // ErrorResponse의 message 필드 사용
+      }
+    } catch (error) {
+      console.error("회원가입 요청 실패:", error);
+      alert("서버 통신 중 오류가 발생했습니다.");
+    }
   };
 
   return (

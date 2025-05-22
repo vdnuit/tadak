@@ -1,4 +1,5 @@
 package com.scsa.tadak.api;
+import com.scsa.tadak.user.LoginRequest;
 
 import com.scsa.tadak.user.UserCreateForm;
 import com.scsa.tadak.user.UserService;
@@ -60,4 +61,23 @@ public class UserApiController {
 
         return ResponseEntity.ok("회원가입 성공");
     }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        // 로그인 검증 로직 (아이디/비밀번호 확인 등)
+        boolean success = userService.verify(request.getUsername(), request.getPassword());
+
+        if (success) {
+            return ResponseEntity.ok("로그인 성공");
+        } else {
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ErrorResponse.builder()
+                    .status(HttpStatus.UNAUTHORIZED.value())
+                    .message("아이디 또는 비밀번호가 올바르지 않습니다.")
+                    .timestamp(LocalDateTime.now())
+                    .path("/api/user/login")
+                    .build());
+        }
+    }
+
 }

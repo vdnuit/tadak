@@ -2,19 +2,40 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthHeader from "../components/AuthHeader";
 
-function Login() {
+function Login({ setIsLoggedIn }) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // 여기에 로그인 요청 (fetch/axios) 후 토큰 저장 로직
-    console.log("로그인 시도:", { id, password });
-
-    // 임시 로직: 로그인 성공 처리
-    localStorage.setItem("access_token", "example_token");
-    navigate("/");
+  const handleLogin = async () => {
+    try {
+      const response = await fetch("/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: id,
+          password: password,
+        }),
+      });
+  
+      if (response.ok) {
+        // 실제 서버 응답에 따라 처리 (ex: 토큰 또는 단순 메시지)
+        // localStorage.setItem("access_token", token);  ← 추후 확장 가능
+        setIsLoggedIn(true);
+        alert("로그인 성공");
+        navigate("/");
+      } else {
+        const data = await response.json();
+        alert(data.message); // ErrorResponse.message 사용
+      }
+    } catch (error) {
+      console.error("로그인 요청 실패:", error);
+      alert("서버 오류가 발생했습니다.");
+    }
   };
+  
 
   const handleSignup = () => {
     navigate("/signup");

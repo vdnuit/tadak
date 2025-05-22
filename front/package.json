@@ -16,7 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && npm run copy",
-    "copy": "xcopy build \"../backend/src/main/resources/static\" /E /Y /I",
+    "copy": "xcopy build \"../back/src/main/resources/static\" /E /Y /I",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

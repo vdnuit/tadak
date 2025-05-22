@@ -8,6 +8,10 @@ import jakarta.persistence.Id;
 
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.persistence.OneToMany;
+import java.util.List;
+import java.util.ArrayList;
+import com.scsa.tadak.letter.Letter;
 
 @Getter
 @Setter
@@ -25,4 +29,8 @@ public class SiteUser {
 
     @Column(unique = true)
     private String email;
+    
+    @OneToMany(mappedBy = "sender")
+    private List<Letter> letters = new ArrayList<>();
+
 }

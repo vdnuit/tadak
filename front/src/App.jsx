@@ -1,22 +1,26 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Main from "./pages/Main";
+// import Login from "./pages/Login";
+// import WriteLetter from "./pages/WriteLetter";
 
 function App() {
-  const [message, setMessage] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    fetch('/api/hello')  // Spring Boot에 요청
-      .then(res => res.text())  // 문자열로 응답 받음
-      .then(data => setMessage(data));
+    // 실제 로그인 상태 확인 로직 (예: localStorage, 세션, API 등)
+    const token = localStorage.getItem("access_token"); // 예시
+    setIsLoggedIn(!!token);
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Spring에서 온 메시지:</p>
-        <p>{message}</p>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
+        {/* <Route path="/login" element={<Login />} />
+        <Route path="/write" element={<WriteLetter />} /> */}
+      </Routes>
+    </Router>
   );
 }
 

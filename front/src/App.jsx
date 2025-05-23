@@ -5,7 +5,8 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Write from "./pages/Write";
 import MyPage from "./pages/Mypage";
-// import Detail from "./pages/Detail";
+import Detail from "./pages/Detail";
+import Footer from "./layouts/Footer";
 import axios from "axios";
 
 function App() {
@@ -14,27 +15,34 @@ function App() {
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/user/me", { withCredentials: true })
-      .then((res) => {
-        setIsLoggedIn(true); // 인증 성공 시 로그인 상태로 설정
-      })
-      .catch(() => {
-        setIsLoggedIn(false); // 인증 실패 → 로그인 안 됨
-      });
+      .then(() => setIsLoggedIn(true))
+      .catch(() => setIsLoggedIn(false));
   }, []);
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
-        <Route
-          path="/login"
-          element={<Login setIsLoggedIn={setIsLoggedIn} />}
-        />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/write" element={<Write />} />
-        <Route path="/mypage" element={<MyPage />} />
-        {/* <Route path="/detail" element={<Detail />} /> */}
-      </Routes>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        <div style={{ flex: "1" }}>
+          <Routes>
+            <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
+            <Route
+              path="/login"
+              element={<Login setIsLoggedIn={setIsLoggedIn} />}
+            />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/write" element={<Write />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/detail/:id" element={<Detail />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </Router>
   );
 }

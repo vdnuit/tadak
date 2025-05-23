@@ -11,12 +11,12 @@ function formatDate(createdAt) {
   return `${yy}.${mm}.${dd} ${hh}:${min}`;
 }
 
-function MessageCard({ title, sender, createdAt }) {
+function MessageCard({ id, title, sender, createdAt }) {
   const navigate = useNavigate();
 
   return (
     <div
-      onClick={() => navigate("/detail")}
+      onClick={() => navigate(`/detail/${id}`)}
       style={{
         display: "flex",
         justifyContent: "space-between",

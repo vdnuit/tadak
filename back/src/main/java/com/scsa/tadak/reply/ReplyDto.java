@@ -1,4 +1,4 @@
-package com.scsa.tadak.letter;
+package com.scsa.tadak.reply;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,11 +7,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class LetterDto {
+public class ReplyDto {
     private Long id;
-    private String title;
     private String content;
-    private String sender;     // username
-    private Long senderId;     // <- 추가
+    private String replier;
     private LocalDateTime createdAt;
 }

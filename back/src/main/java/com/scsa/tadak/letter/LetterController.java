@@ -36,4 +36,10 @@ public class LetterController {
         SiteUser user = userDetails.getSiteUser();
         return letterService.getLettersSentBy(user.getId());
     }
+    @GetMapping("/{id}")
+    public LetterDto getLetter(@PathVariable("id") Long id) {
+        return letterService.getLetterById(id);
+    }
+
+
 }

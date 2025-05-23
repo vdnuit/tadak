@@ -29,6 +29,7 @@ function MessageBox({ type, title, messages }) {
         {messages.map((msg) => (
           <MessageCard
             key={msg.id}
+            id={msg.id}
             title={msg.title}
             sender={msg.sender}
             createdAt={msg.createdAt} // ✅ 추가됨

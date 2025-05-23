@@ -3,6 +3,7 @@ package com.scsa.tadak.api;
 import com.scsa.tadak.user.LoginRequest;
 import com.scsa.tadak.user.SiteUser;
 import com.scsa.tadak.user.SiteUserDetails;
+import com.scsa.tadak.user.UserResponseDto;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import com.scsa.tadak.user.UserCreateForm;
@@ -44,14 +45,22 @@ public class UserApiController {
 
         return ResponseEntity.ok("회원가입 성공");
     }
-
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal SiteUserDetails userDetails) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
-        return ResponseEntity.ok(userDetails.getUsername());
+        SiteUser user = userDetails.getSiteUser();
+
+        UserResponseDto dto = new UserResponseDto(
+            user.getId(),
+            user.getUsername(),
+            user.getEmail()
+        );
+
+        return ResponseEntity.ok(dto); // ✅ JSON 형식으로 응답
     }
+
 
 }

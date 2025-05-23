@@ -10,6 +10,8 @@ import java.util.Collections;
 public class SiteUserDetails implements UserDetails {
 
     private final SiteUser siteUser;
+    
+    
 
     public SiteUserDetails(SiteUser siteUser) {
         this.siteUser = siteUser;

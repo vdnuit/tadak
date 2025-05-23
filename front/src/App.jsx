@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Write from "./pages/Write";
 import MyPage from "./pages/Mypage";
+// import Detail from "./pages/Detail";
 import axios from "axios";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/write" element={<Write />} />
         <Route path="/mypage" element={<MyPage />} />
+        {/* <Route path="/detail" element={<Detail />} /> */}
       </Routes>
     </Router>
   );

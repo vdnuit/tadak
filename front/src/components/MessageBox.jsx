@@ -27,7 +27,12 @@ function MessageBox({ type, title, messages }) {
         msOverflowStyle: "none"
       }}>
         {messages.map((msg) => (
-          <MessageCard key={msg.id} title={msg.title} sender={msg.sender} />
+          <MessageCard
+            key={msg.id}
+            title={msg.title}
+            sender={msg.sender}
+            createdAt={msg.createdAt} // ✅ 추가됨
+          />
         ))}
       </div>
     </div>

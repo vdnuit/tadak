@@ -17,11 +17,12 @@ public class Receive {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long receiveId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "letter_id", nullable = false, unique = true)
     private Letter letter;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id", nullable = false)
     private SiteUser receiver;
 }
+

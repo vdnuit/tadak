@@ -8,6 +8,7 @@ import MyPage from "./pages/Mypage";
 import Detail from "./pages/Detail";
 import Footer from "./layouts/Footer";
 import axios from "axios";
+import Navbar from "./layouts/Navbar";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,6 +29,8 @@ function App() {
           minHeight: "100vh",
         }}
       >
+        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+
         <div style={{ flex: "1" }}>
           <Routes>
             <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />

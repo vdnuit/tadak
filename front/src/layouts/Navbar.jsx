@@ -19,7 +19,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import styled from "styled-components";
 import logo from "../assets/logo_main.png";
 
-// ✅ Styled Components
 const StyledAppBar = styled(AppBar)`
   && {
     background-color: ${({ theme }) => theme.palette.grey[500]};

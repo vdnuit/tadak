@@ -27,7 +27,7 @@ function Main({ isLoggedIn }) {
 
       <div className="main-content">
         <h1>타닥, 이야기를 담은 편지의 소리</h1>
-        <img src={logo} alt="타닥 로고" className="logo" />
+        {/* <img src={logo} alt="타닥 로고" className="logo" /> */}
         <p>키보드로 시작하는 경량 펜팔 서비스</p>
 
         <div className="button-group">

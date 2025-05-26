@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import styled from "styled-components";
+import Button from "../components/Button"; // 공통 버튼 컴포넌트 사용
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -12,33 +14,114 @@ function formatDate(dateString) {
   return `${yy}.${mm}.${dd} ${hh}:${min}`;
 }
 
-const replyBoxStyle = {
-  backgroundColor: "#f1f1f1",
-  padding: "1rem",
-  borderRadius: "8px",
-  maxWidth: "500px",
-  marginTop: "1rem",
-  alignSelf: "flex-end",
+const mockLetter = {
+  id: 1,
+  sender: "MockUser",
+  senderId: 2,
+  title: "테스트 편지 제목",
+  content:
+    "이것은 테스트용 목업 편지 본문입니다.이것은 테스트용 목업 편지 본문입니다.이것은 테스트용 목업 편지 본문입니다.이것은 테스트용 목업 편지 본문입니다.이것은 테스트용 목업 편지 본문입니다.",
+  createdAt: new Date().toISOString(),
 };
+
+const mockReply = {
+  id: 1,
+  replier: "MockReplier",
+  content: "이것은 테스트용 목업 답장입니다.",
+  createdAt: new Date().toISOString(),
+};
+
+const Container = styled.div`
+  width: 90%;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const Title = styled.h1`
+  font-size: 28px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.palette.common.white};
+  letter-spacing: -0.06em;
+  margin-bottom: 0rem;
+`;
+
+const Meta = styled.div`
+  font-size: 20px;
+  font-weight: 400;
+  margin-top:-1.5rem;
+  color: ${({ theme }) => theme.palette.common.white};
+`;
+
+const MessageBox = styled.div`
+  background-color: ${({ theme }) => theme.palette.primary.dark};
+  color: ${({ theme }) => theme.palette.common.white};
+  padding: 1rem;
+  border-radius: 8px;
+  align-self: flex-start;
+  width: 70%;
+  max-width: 480px;
+`;
+
+const ReplyBox = styled.div`
+  background-color: ${({ theme }) => theme.palette.grey[400]};
+  color: ${({ theme }) => theme.palette.common.white};
+  padding: 1rem;
+  border-radius: 8px;
+  width: 70%;
+  max-width: 480px;
+  align-self: flex-end;
+`;
+
+const ReplyInputWrapper = styled.div`
+  width: 70%;
+  max-width: 480px;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const TextArea = styled.textarea`
+  background-color: ${({ theme }) => theme.palette.grey[400]};
+  color: ${({ theme }) => theme.palette.common.white};
+  padding: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  border: none;
+  resize: none;
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: -0.06em;
+`;
 
 function Detail() {
   const { id } = useParams();
   const [letter, setLetter] = useState(null);
   const [reply, setReply] = useState(null);
   const [replyContent, setReplyContent] = useState("");
-  const [userId, setUserId] = useState(null); // 로그인 사용자 ID
+  const [userId, setUserId] = useState(null);
 
-  // 사용자 정보 및 편지/답장 로딩
   useEffect(() => {
+    if (id === "test") {
+      setLetter(mockLetter);
+      setReply(mockReply);
+      setUserId(99);
+      return;
+    }
+
     axios
       .get("/api/user/me", { withCredentials: true })
-      .then((res) => {
-        setUserId(res.data.id);
-      })
+      .then((res) => setUserId(res.data.id))
       .catch(() => alert("사용자 정보를 불러오지 못했습니다."));
-  }, []);
+  }, [id]);
 
   useEffect(() => {
+    if (id === "test") return;
+
     axios
       .get(`/api/letters/${id}`, { withCredentials: true })
       .then((res) => setLetter(res.data))
@@ -47,9 +130,7 @@ function Detail() {
     axios
       .get(`/api/replies/${id}`, { withCredentials: true })
       .then((res) => setReply(res.data))
-      .catch(() => {
-        // 답장이 없는 경우 무시
-      });
+      .catch(() => {});
   }, [id]);
 
   const handleReplySubmit = async () => {
@@ -71,98 +152,60 @@ function Detail() {
       setReply(res.data);
       alert("답장이 성공적으로 작성되었습니다.");
       setReplyContent("");
-    } catch (err) {
+    } catch {
       alert("답장 작성에 실패했습니다.");
     }
   };
 
-  if (!letter)
-    return <div style={{ padding: "2rem" }}>편지 불러오는 중...</div>;
+  if (!letter) return <Container>편지 불러오는 중...</Container>;
 
   return (
-    <div
-      style={{
-        padding: "2rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "1.5rem",
-      }}
-    >
-      {/* 제목 */}
-      <div style={{ fontSize: "1.75rem", fontWeight: "bold" }}>
-        {letter.title}
-      </div>
-
-      {/* 작성자 / 작성일 */}
-      <div style={{ color: "#666", fontSize: "0.95rem" }}>
+    <Container>
+      <Title>{letter.title}</Title>
+      <Meta>
         {letter.sender} / {formatDate(letter.createdAt)}
-      </div>
+      </Meta>
 
-      {/* 본문 편지 박스 */}
-      <div
-        style={{
-          backgroundColor: "#f5f5f5",
-          padding: "1rem",
-          borderRadius: "8px",
-          alignSelf: "flex-start",
-          maxWidth: "500px",
-        }}
-      >
+      <MessageBox>
         <div style={{ marginBottom: "0.5rem" }}>{letter.content}</div>
-        <div style={{ textAlign: "right", fontSize: "0.85rem", color: "gray" }}>
+        <div style={{ textAlign: "right", fontSize: "0.85rem", opacity: 0.8 }}>
           {letter.sender} / {formatDate(letter.createdAt)}
         </div>
-      </div>
+      </MessageBox>
 
-      {/* 답장 or textarea */}
       {reply ? (
-        <div style={replyBoxStyle}>
+        <ReplyBox>
           <div style={{ marginBottom: "0.5rem" }}>{reply.content}</div>
           <div
-            style={{ textAlign: "right", fontSize: "0.85rem", color: "gray" }}
+            style={{ textAlign: "right", fontSize: "0.85rem", opacity: 0.8 }}
           >
             {reply.replier} / {formatDate(reply.createdAt)}
           </div>
-        </div>
+        </ReplyBox>
       ) : (
-        // 자신이 보낸 편지가 아닐 때만 답장 가능
         userId !== null &&
         letter.senderId !== userId && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-              maxWidth: "500px",
-            }}
-          >
-            <textarea
+          <ReplyInputWrapper>
+            <TextArea
               placeholder="답장을 작성해주세요"
               value={replyContent}
               onChange={(e) => setReplyContent(e.target.value)}
               rows={4}
-              style={{ ...replyBoxStyle, resize: "none", width: "100%" }}
             />
-            <button
-              onClick={handleReplySubmit}
-              style={{
-                marginTop: "0.5rem",
-                padding: "0.5rem 1rem",
-                backgroundColor: "#50CFB1",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                fontWeight: "bold",
-                cursor: "pointer",
-                alignSelf: "flex-end",
-              }}
-            >
-              작성 완료
-            </button>
-          </div>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button
+                size="fixedSmall"
+                variant="red"
+                shape="round"
+                onClick={handleReplySubmit}
+              >
+                작성 완료
+              </Button>
+            </div>
+          </ReplyInputWrapper>
         )
       )}
-    </div>
+    </Container>
   );
 }
 

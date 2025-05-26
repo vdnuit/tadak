@@ -63,13 +63,20 @@ const Subtitle = styled.p`
 `;
 
 const ButtonGroup = styled.div`
-  margin-top: 32px;
   display: flex;
   gap: 16px;
+  margin-top: 32px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
     flex-direction: column;
-    gap: 12px;
+
+    & > button:first-child {
+      order: 2;
+    }
+
+    & > button:last-child {
+      order: 1;
+    }
   }
 `;
 

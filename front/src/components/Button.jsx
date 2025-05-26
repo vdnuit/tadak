@@ -24,32 +24,52 @@ const sizeStyles = {
   `,
 };
 
-// ⬇︎ variant 스타일에서 theme 사용
 const variantStyles = {
   red: css`
     background-color: ${({ theme }) => theme.palette.secondary.main};
     color: ${({ theme }) => theme.palette.common.white || "#FFFFFF"};
     font-weight: 600;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.palette.error.dark || "#e55f7f"};
+    }
   `,
   whiteBold: css`
     background-color: ${({ theme }) => theme.palette.common.white || "#FFFFFF"};
     color: ${({ theme }) => theme.palette.common.black || "#000000"};
     font-weight: 600;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.palette.grey[200]};
+    }
   `,
   whiteRegular: css`
     background-color: ${({ theme }) => theme.palette.common.white || "#FFFFFF"};
     color: ${({ theme }) => theme.palette.common.black || "#000000"};
     font-weight: 400;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.palette.grey[100]};
+    }
   `,
   grey: css`
     background-color: ${({ theme }) => theme.palette.grey[300]};
     color: ${({ theme }) => theme.palette.text.primary};
     font-weight: 400;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.palette.grey[400]};
+    }
   `,
   greenBold: css`
     background-color: ${({ theme }) => theme.palette.primary.main};
     color: ${({ theme }) => theme.palette.common.white || "#FFFFFF"};
     font-weight: 600;
+
+    &:hover {
+      background-color: ${({ theme }) =>
+        theme.palette.primary.dark || "#16A480"};
+    }
   `,
 };
 
@@ -71,6 +91,7 @@ const StyledButton = styled.button`
   letter-spacing: -0.06em;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   ${({ size }) => sizeStyles[size]};
   ${({ variant }) => variantStyles[variant]};

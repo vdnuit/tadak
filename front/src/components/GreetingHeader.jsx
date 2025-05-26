@@ -1,36 +1,93 @@
+// components/GreetingHeader.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import Button from "../components/Button";
+
+const HeaderWrapper = styled.div`
+  width: 92%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+`;
+
+const UserRow = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  span:first-child {
+    font-family: "Agbalumo", cursive;
+    font-size: 60px;
+    color: ${({ theme }) => theme.palette.primary.main};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
+      font-size: 50px;
+    }
+  }
+
+  span:last-child {
+    font-size: 28px;
+    color: ${({ theme }) => theme.palette.common.white};
+    margin-left: 0.5rem;
+    margin-top: 2.5rem;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
+      font-size: 20px;
+    }
+  }
+`;
+
+const DescriptionRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.palette.common.white};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
+      font-size: 16px;
+    }
+  }
+
+  button {
+    margin-top: 1rem;
+
+    @media (min-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
+      margin-top: 0;
+    }
+  }
+`;
 
 function GreetingHeader({ userId }) {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <div style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}>
-        <span style={{ fontWeight: "bold", fontSize: "1.5rem", color: "#50CFB1" }}>{userId}</span>
-        <span style={{ marginLeft: "0.5rem", fontSize: "1.5rem" }}>님, 안녕하세요!</span>
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <HeaderWrapper>
+      <UserRow>
+        <span>{userId}</span>
+        <span>님, 안녕하세요!</span>
+      </UserRow>
+      <DescriptionRow>
         <div>
-          <p style={{ margin: 0 }}>오늘의 편지는 작성하셨나요?</p>
-          <p style={{ margin: 0 }}>새로운 편지를 쓰고 한 통의 편지를 받아보세요!</p>
+          <p>오늘의 편지는 작성하셨나요?</p>
+          <p>새로운 편지를 쓰고 한 통의 편지를 받아보세요!</p>
         </div>
-        <button
+        <Button
+          size="fixedSmall"
+          variant="red"
+          shape="round"
           onClick={() => navigate("/write")}
-          style={{
-            backgroundColor: "#50CFB1",
-            color: "white",
-            border: "none",
-            padding: "0.75rem 1.25rem",
-            borderRadius: "20px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
         >
           편지 쓰러가기
-        </button>
-      </div>
-    </div>
+        </Button>
+      </DescriptionRow>
+    </HeaderWrapper>
   );
 }
 

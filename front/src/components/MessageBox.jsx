@@ -1,42 +1,57 @@
+// components/MessageBox.jsx
 import React from "react";
+import styled from "styled-components";
 import MessageCard from "./MessageCard";
+
+const BoxWrapper = styled.div`
+  width: 100%;
+  max-width: 500px;
+`;
+
+const BoxHeader = styled.div`
+  width: 183px;
+  height: 38px;
+  background-color: ${({ theme }) => theme.palette.primary.dark};
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  color: ${({ theme }) => theme.palette.common.white};
+  margin-bottom: 1rem;
+`;
+
+const ScrollBox = styled.div`
+  background-color: ${({ theme }) => theme.palette.grey[400]};
+  border-radius: 10px;
+  padding: 1rem;
+  height: 300px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 function MessageBox({ type, title, messages }) {
   return (
-    <div style={{ width: "300px" }}>
-      {/* 초록색 헤더 */}
-      <div style={{
-        backgroundColor: "#50CFB1",
-        padding: "0.75rem 1rem",
-        borderRadius: "20px",
-        textAlign: "center",
-        fontWeight: "bold",
-        marginBottom: "1rem"
-      }}>
-        {title}
-      </div>
-
-      {/* 회색 스크롤 박스 */}
-      <div style={{
-        backgroundColor: "#eee",
-        borderRadius: "8px",
-        padding: "1rem",
-        height: "300px",
-        overflowY: "scroll",
-        scrollbarWidth: "none",
-        msOverflowStyle: "none"
-      }}>
+    <BoxWrapper>
+      <BoxHeader>{title}</BoxHeader>
+      <ScrollBox>
         {messages.map((msg) => (
           <MessageCard
             key={msg.id}
             id={msg.id}
             title={msg.title}
-            sender={msg.sender}
-            createdAt={msg.createdAt} // ✅ 추가됨
+            sender={type === "received" ? msg.senderName : msg.receiverName}
+            createdAt={msg.createdAt}
           />
         ))}
-      </div>
-    </div>
+      </ScrollBox>
+    </BoxWrapper>
   );
 }
 

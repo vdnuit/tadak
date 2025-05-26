@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 function formatDate(createdAt) {
   const date = new Date(createdAt);
@@ -11,32 +12,57 @@ function formatDate(createdAt) {
   return `${yy}.${mm}.${dd} ${hh}:${min}`;
 }
 
+const Card = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const Title = styled.div`
+  font-weight: bold;
+  color: ${({ theme }) => theme.palette.grey[400] || "#000"};
+`;
+
+const Subtitle = styled.div`
+  font-size: 0.875rem;
+  color: gray;
+`;
+
+const Arrow = styled.div`
+  font-size: 1.25rem;
+  color: #888;
+`;
+
 function MessageCard({ id, title, sender, createdAt }) {
   const navigate = useNavigate();
 
   return (
-    <div
-      onClick={() => navigate(`/detail/${id}`)}
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "0.75rem",
-        marginBottom: "0.5rem",
-        backgroundColor: "white",
-        borderRadius: "4px",
-        cursor: "pointer",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-      }}
-    >
+    <Card onClick={() => navigate(`/detail/${id}`)}>
       <div>
-        <div style={{ fontWeight: "bold" }}>{title}</div>
-        <div style={{ fontSize: "0.875rem", color: "gray" }}>
+        <Title>{title}</Title>
+        <Subtitle>
           {sender} · {formatDate(createdAt)}
-        </div>
+        </Subtitle>
       </div>
-      <div style={{ fontSize: "1.25rem", color: "#888" }}>{">"}</div>
-    </div>
+      <Arrow>{">"}</Arrow>
+    </Card>
   );
 }
 

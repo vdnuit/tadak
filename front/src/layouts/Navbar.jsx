@@ -123,7 +123,7 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
                 }}
               >
                 <Box
-                  sx={{ width: 250, p: 2 }}
+                  sx={{ width: 200, p: 2 }}
                   role="presentation"
                   onClick={toggleDrawer(false)}
                   onKeyDown={toggleDrawer(false)}

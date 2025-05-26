@@ -41,7 +41,7 @@ const theme = createTheme({
   },
   breakpoints: {
     values: {
-      xs: 0,
+      xs: 500,
       sm: 800, // 모바일 vs. 데스크탑 기준
       md: 960,
       lg: 1280,

@@ -1,6 +1,31 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import AuthHeader from "../components/AuthHeader";
+import AuthTextField from "../components/AuthTextField";
+import Button from "../components/Button";
+
+const SignupContainer = styled.div`
+  margin: 0 auto;
+  padding: 2rem;
+  width: 280px;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.xs}px) {
+    width: 404px;
+    margin-bottom: 100px;
+  }
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
+    width: 454px;
+    margin-bottom: 100px;
+  }
+`;
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+`;
 
 function SignUp() {
   const [id, setId] = useState("");
@@ -8,13 +33,41 @@ function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
 
+  const [idError, setIdError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
-    if (password !== confirmPassword) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
+    setIdError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+    setEmailError("");
+
+    let hasError = false;
+    if (!id.trim()) {
+      setIdError("아이디를 입력해주세요.");
+      hasError = true;
     }
+    if (!password.trim()) {
+      setPasswordError("비밀번호를 입력해주세요.");
+      hasError = true;
+    }
+    if (!confirmPassword.trim()) {
+      setConfirmPasswordError("비밀번호를 다시 입력해주세요.");
+      hasError = true;
+    } else if (password !== confirmPassword) {
+      setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
+      hasError = true;
+    }
+    if (!email.trim()) {
+      setEmailError("이메일을 입력해주세요.");
+      hasError = true;
+    }
+
+    if (hasError) return;
 
     try {
       const response = await fetch("http://localhost:8080/api/user/signup", {
@@ -28,7 +81,7 @@ function SignUp() {
           password2: confirmPassword,
           email: email,
         }),
-        credentials: "include", // ✅ 추가해도 부작용 없음
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -36,7 +89,11 @@ function SignUp() {
         navigate("/login");
       } else {
         const data = await response.json();
-        alert(data.message); // ErrorResponse의 message 필드 사용
+        const message = data.message || "회원가입에 실패했습니다.";
+        setIdError(message);
+        setPasswordError(message);
+        setConfirmPasswordError(message);
+        setEmailError(message);
       }
     } catch (error) {
       console.error("회원가입 요청 실패:", error);
@@ -45,49 +102,47 @@ function SignUp() {
   };
 
   return (
-    <div
-      className="signup-container"
-      style={{ maxWidth: "400px", margin: "0 auto", padding: "2rem" }}
-    >
+    <SignupContainer>
       <AuthHeader />
-
-      <div className="form-group" style={{ marginTop: "2rem" }}>
-        <input
-          type="text"
-          placeholder="ID"
+      <InputGroup>
+        <AuthTextField
+          label="ID"
           value={id}
           onChange={(e) => setId(e.target.value)}
-          style={{ width: "100%", padding: "0.75rem", marginBottom: "1rem" }}
+          error={idError}
         />
-        <input
+        <AuthTextField
+          label="Password"
           type="password"
-          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{ width: "100%", padding: "0.75rem", marginBottom: "1rem" }}
+          error={passwordError}
         />
-        <input
+        <AuthTextField
+          label="Re-enter Password"
           type="password"
-          placeholder="비밀번호 확인"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          style={{ width: "100%", padding: "0.75rem", marginBottom: "1rem" }}
+          error={confirmPasswordError}
         />
-        <input
+        <AuthTextField
+          label="Email"
           type="email"
-          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ width: "100%", padding: "0.75rem", marginBottom: "1.5rem" }}
+          error={emailError}
         />
-        <button
-          onClick={handleSignUp}
-          style={{ width: "100%", padding: "0.75rem" }}
-        >
-          회원가입하기
-        </button>
-      </div>
-    </div>
+      </InputGroup>
+      <Button
+        onClick={handleSignUp}
+        size="responsive"
+        variant="greenBold"
+        shape="square"
+        style={{ width: "100%" }}
+      >
+        회원가입하기
+      </Button>
+    </SignupContainer>
   );
 }
 

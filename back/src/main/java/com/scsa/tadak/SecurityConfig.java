@@ -47,14 +47,15 @@ public class SecurityConfig {
                     PrintWriter writer = response.getWriter();
                     writer.write("로그인 성공");
                     writer.flush();
-                })
-                .failureHandler((request, response, exception) -> {
+                }).failureHandler((request, response, exception) -> {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    response.setContentType("text/plain;charset=UTF-8");
+                    response.setContentType("application/json;charset=UTF-8");
+
                     PrintWriter writer = response.getWriter();
-                    writer.write("로그인 실패: " + exception.getMessage());
+                    writer.write("{\"message\": \"아이디 또는 비밀번호가 잘못되었습니다.\"}");
                     writer.flush();
                 })
+
             )
             .logout((logout) -> logout
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))

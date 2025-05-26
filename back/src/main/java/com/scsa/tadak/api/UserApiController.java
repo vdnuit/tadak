@@ -5,6 +5,8 @@ import com.scsa.tadak.user.SiteUser;
 import com.scsa.tadak.user.SiteUserDetails;
 import com.scsa.tadak.user.UserResponseDto;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.scsa.tadak.user.UserCreateForm;
 import com.scsa.tadak.user.UserService;
@@ -61,6 +63,12 @@ public class UserApiController {
 
         return ResponseEntity.ok(dto); // ✅ JSON 형식으로 응답
     }
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().invalidate(); // 세션 무효화
+        return ResponseEntity.ok("로그아웃 성공");
+    }
+
 
 
 }

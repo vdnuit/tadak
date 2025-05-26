@@ -1,11 +1,112 @@
 import React, { useState } from "react";
-import axios from "axios";
-import bgImage from "../assets/typewriter_background.png";
 import { useNavigate } from "react-router-dom";
+import { Box, Container, TextField } from "@mui/material";
+import styled from "styled-components";
+import bgImage from "../assets/typewriter_bkg.png";
+import Button from "../components/Button";
+
+const PageWrapper = styled.div`
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding: 5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const IntroBox = styled.div`
+  background-image: url(${bgImage});
+  background-size: cover;
+  background-position: center;
+  padding: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+`;
+
+const ContentBox = styled.div`
+  width: 90%;
+  max-width: 780px;
+  color: ${({ theme }) => theme.palette.common.white};
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const TitleText = styled.div`
+  font-weight: 600;
+  color: ${({ theme }) => theme.palette.common.white};
+  font-size: 24px;
+  text-align: left;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  white-space: normal;
+  word-break: keep-all;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
+    font-size: 28px;
+  }
+`;
+
+const ListItemTitle = styled.div`
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 0.1rem;
+  color: ${({ theme }) => theme.palette.common.white};
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
+    font-size: 17px;
+  }
+`;
+
+const ListItemDescription = styled.div`
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 0.6;
+  color: ${({ theme }) => theme.palette.common.white};
+  margin-top: 0rem;
+  text-indent: 1.5rem;
+  white-space: normal;
+  word-break: keep-all;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
+    font-size: 17px;
+  }
+`;
+
+const InputField = styled(TextField)`
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.palette.common.white};
+
+  & .MuiOutlinedInput-root {
+    border-radius: 4px;
+
+    & input,
+    & textarea {
+      font-family: ${({ theme }) => theme.typography.fontFamily};
+      letter-spacing: -0.06em;
+      color: ${({ theme }) => theme.palette.common.black}; /* 텍스트 색상 */
+
+      &::placeholder {
+        color: ${({ theme }) => theme.palette.grey[300]}; /* placeholder 색상 */
+        opacity: 1; /* 크롬에서 기본 투명도 제거 */
+      }
+    }
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 
 function Write() {
   const navigate = useNavigate();
-
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -16,20 +117,19 @@ function Write() {
     }
 
     try {
-      const response = await axios.post(
-        "/api/letters",
-        {
-          title,
-          content,
-        },
-        {
-          withCredentials: true, // ✅ 세션 쿠키(JSESSIONID)를 함께 보냄
-        }
-      );
+      const response = await fetch("/api/letters", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ title, content }),
+      });
 
-      console.log("편지 작성 성공:", response.data);
-      alert("편지가 성공적으로 작성되었습니다.");
-      navigate("/mypage"); // 작성 성공 시 리다이렉트
+      if (response.ok) {
+        alert("편지가 성공적으로 작성되었습니다.");
+        navigate("/mypage");
+      } else {
+        alert("편지 작성에 실패했습니다.");
+      }
     } catch (error) {
       console.error("편지 작성 실패:", error);
       alert("편지 작성에 실패했습니다.");
@@ -37,93 +137,62 @@ function Write() {
   };
 
   return (
-    <div
-      className="write-page"
-      style={{
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-        padding: "4rem 1rem",
-      }}
-    >
-      <div
-        className="intro-box"
-        style={{
-          backgroundImage: `url(${bgImage})`,
-          padding: "2rem",
-          borderRadius: "8px",
-          maxWidth: "600px",
-          margin: "0 auto",
-          marginBottom: "2rem",
-        }}
-      >
-        <h2 style={{ marginBottom: "1.5rem" }}>
-          한 통의 편지를 띄우면, 다른 한 통을 받게 됩니다.
-        </h2>
-        <ol style={{ paddingLeft: "1.2rem", lineHeight: "1.7" }}>
-          <li>
-            <strong>편지를 작성해보세요</strong>
-            <br />
+    <PageWrapper>
+      <IntroBox>
+        <ContentBox>
+          <TitleText>
+            한 통의 편지를 띄우면, 다른 한 통을 받게 됩니다.
+          </TitleText>
+
+          <ListItemTitle>1. 편지를 작성해보세요</ListItemTitle>
+          <ListItemDescription>
             당신의 생각을 담아 편지를 작성하면, 언젠가 단 한 사람에게
             전달됩니다.
-          </li>
-          <li style={{ marginTop: "1rem" }}>
-            <strong>다른 사람의 편지를 받아보세요</strong>
-            <br />
+          </ListItemDescription>
+
+          <ListItemTitle>2. 다른 사람의 편지를 받아보세요</ListItemTitle>
+          <ListItemDescription>
             익명의 타인이 쓴 편지를 받을 수 있는 기회, 예상치 못한 소통이
             기다리고 있습니다.
-          </li>
-          <li style={{ marginTop: "1rem" }}>
-            <strong>답장을 기다려보세요</strong>
-            <br />
+          </ListItemDescription>
+
+          <ListItemTitle>3. 답장을 기다려보세요</ListItemTitle>
+          <ListItemDescription>
             받은 편지에 대한 답장이 올 수도 있습니다. 새로운 이야기를 나누는
             순간을 기대해 보세요.
-          </li>
-        </ol>
-      </div>
+          </ListItemDescription>
+        </ContentBox>
+      </IntroBox>
 
-      <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-        <input
-          type="text"
+      <ContentBox>
+        <InputField
+          variant="outlined"
           placeholder="제목을 적어주세요"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "1rem",
-            marginBottom: "1rem",
-            fontSize: "1rem",
-          }}
         />
-        <textarea
+
+        <InputField
+          variant="outlined"
           placeholder="전하고 싶은 말을 입력해주세요"
+          multiline
+          rows={8}
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          rows={8}
-          style={{
-            width: "100%",
-            padding: "1rem",
-            fontSize: "1rem",
-            marginBottom: "1.5rem",
-          }}
-        ></textarea>
-        <button
-          onClick={handleSubmit}
-          style={{
-            width: "100%",
-            padding: "0.75rem",
-            fontSize: "1rem",
-            fontWeight: "bold",
-            backgroundColor: "#333",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          작성 완료
-        </button>
-      </div>
-    </div>
+        />
+
+        <ButtonWrapper>
+          <Button
+            onClick={handleSubmit}
+            size="fixedLarge"
+            variant="red"
+            shape="square"
+          >
+            작성 완료
+          </Button>
+        </ButtonWrapper>
+      </ContentBox>
+    </PageWrapper>
   );
 }
 

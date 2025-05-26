@@ -23,12 +23,13 @@ const StyledAppBar = styled(AppBar)`
   && {
     background-color: ${({ theme }) => theme.palette.grey[500]};
     height: 53px;
+    padding: 0;
   }
 `;
 
 const StyledToolbar = styled(Toolbar)`
   height: 53px;
-  min-height: 53px;
+  min-height: 53px !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,6 +44,7 @@ const LogoWrapper = styled.div`
   img {
     width: 97px;
     height: 29px;
+    margin-top: 4px;
   }
 `;
 
@@ -55,7 +57,7 @@ const DesktopMenuWrapper = styled.div`
 const MenuText = styled(Typography)`
   color: ${({ theme }) => theme.palette.common.white};
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600 !important;
   transition: color 0.3s ease;
 
   &:hover {

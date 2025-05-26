@@ -1,6 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import AuthHeader from "../components/AuthHeader";
+import Button from "../components/Button";
+
+const LoginContainer = styled.div`
+  margin: 0 auto;
+  padding: 2rem;
+
+  width: 280px;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
+    width: 404px;
+    margin-bottom: 100px; /* 폭이 sm 이상일 때만 하단 마진 */
+  }
+`;
 
 function Login({ setIsLoggedIn }) {
   const [id, setId] = useState("");
@@ -19,7 +33,7 @@ function Login({ setIsLoggedIn }) {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: params,
-        credentials: "include", // ✅ 세션 쿠키 포함
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -41,12 +55,8 @@ function Login({ setIsLoggedIn }) {
   };
 
   return (
-    <div
-      className="login-container"
-      style={{ maxWidth: "400px", margin: "0 auto", padding: "2rem" }}
-    >
+    <LoginContainer>
       <AuthHeader />
-
       <div className="form-group" style={{ marginTop: "2rem" }}>
         <input
           type="text"
@@ -62,20 +72,26 @@ function Login({ setIsLoggedIn }) {
           onChange={(e) => setPassword(e.target.value)}
           style={{ width: "100%", padding: "0.75rem", marginBottom: "1.5rem" }}
         />
-        <button
+        <Button
           onClick={handleLogin}
-          style={{ width: "100%", padding: "0.75rem", marginBottom: "1rem" }}
+          size="responsive"
+          variant="greenBold"
+          shape="square"
+          style={{ width: "100%", marginBottom: "1rem" }}
         >
           로그인하기
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={handleSignup}
-          style={{ width: "100%", padding: "0.75rem" }}
+          size="responsive"
+          variant="whiteRegular"
+          shape="square"
+          style={{ width: "100%" }}
         >
           회원가입
-        </button>
+        </Button>
       </div>
-    </div>
+    </LoginContainer>
   );
 }
 

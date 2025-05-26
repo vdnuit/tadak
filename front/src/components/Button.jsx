@@ -1,5 +1,5 @@
 // components/common/Button.jsx
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
 const sizeStyles = {
   fixedLarge: css`
@@ -24,30 +24,31 @@ const sizeStyles = {
   `,
 };
 
+// ⬇︎ variant 스타일에서 theme 사용
 const variantStyles = {
   red: css`
-    background-color: #FC7B95;
-    color: white;
+    background-color: ${({ theme }) => theme.palette.secondary.main};
+    color: ${({ theme }) => theme.palette.common.white || "#FFFFFF"};
     font-weight: 600;
   `,
   whiteBold: css`
-    background-color: white;
-    color: black;
+    background-color: ${({ theme }) => theme.palette.common.white || "#FFFFFF"};
+    color: ${({ theme }) => theme.palette.common.black || "#000000"};
     font-weight: 600;
   `,
   whiteRegular: css`
-    background-color: white;
-    color: black;
+    background-color: ${({ theme }) => theme.palette.common.white || "#FFFFFF"};
+    color: ${({ theme }) => theme.palette.common.black || "#000000"};
     font-weight: 400;
   `,
   grey: css`
-    background-color: #EFF0F3;
-    color: white;
+    background-color: ${({ theme }) => theme.palette.grey[300]};
+    color: ${({ theme }) => theme.palette.text.primary};
     font-weight: 400;
   `,
   greenBold: css`
-    background-color: #50CFB1;
-    color: white;
+    background-color: ${({ theme }) => theme.palette.primary.main};
+    color: ${({ theme }) => theme.palette.common.white || "#FFFFFF"};
     font-weight: 600;
   `,
 };
@@ -76,7 +77,7 @@ const StyledButton = styled.button`
   ${({ shape }) => shapeStyles[shape]};
 `;
 
-const Button = ({ children, size, variant, shape = 'square', ...rest }) => {
+const Button = ({ children, size, variant, shape = "square", ...rest }) => {
   return (
     <StyledButton size={size} variant={variant} shape={shape} {...rest}>
       {children}

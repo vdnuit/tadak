@@ -17,7 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import styled from "styled-components";
-import logo from "../assets/logo_main.png";
+import logo from "../assets/logo_green.png";
 
 const StyledAppBar = styled(AppBar)`
   && {
@@ -111,12 +111,17 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
               <IconButton onClick={toggleDrawer(true)} sx={{ color: "white" }}>
                 <MenuIcon />
               </IconButton>
-              <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}      PaperProps={{
-        sx: {
-          width: 200,
-          backgroundColor: theme.palette.grey[400], // ✅ 배경색 grey
-        },
-      }}>
+              <Drawer
+                anchor="right"
+                open={drawerOpen}
+                onClose={toggleDrawer(false)}
+                PaperProps={{
+                  sx: {
+                    width: 200,
+                    backgroundColor: theme.palette.grey[400], // ✅ 배경색 grey
+                  },
+                }}
+              >
                 <Box
                   sx={{ width: 250, p: 2 }}
                   role="presentation"

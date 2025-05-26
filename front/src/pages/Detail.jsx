@@ -14,23 +14,6 @@ function formatDate(dateString) {
   return `${yy}.${mm}.${dd} ${hh}:${min}`;
 }
 
-const mockLetter = {
-  id: 1,
-  sender: "MockUser",
-  senderId: 2,
-  title: "테스트 편지 제목",
-  content:
-    "이것은 테스트용 목업 편지 본문입니다.이것은 테스트용 목업 편지 본문입니다.이것은 테스트용 목업 편지 본문입니다.이것은 테스트용 목업 편지 본문입니다.이것은 테스트용 목업 편지 본문입니다.",
-  createdAt: new Date().toISOString(),
-};
-
-const mockReply = {
-  id: 1,
-  replier: "MockReplier",
-  content: "이것은 테스트용 목업 답장입니다.",
-  createdAt: new Date().toISOString(),
-};
-
 const Container = styled.div`
   width: 90%;
   max-width: 820px;
@@ -52,7 +35,7 @@ const Title = styled.h1`
 const Meta = styled.div`
   font-size: 20px;
   font-weight: 400;
-  margin-top:-1.5rem;
+  margin-top: -1.5rem;
   color: ${({ theme }) => theme.palette.common.white};
 `;
 
@@ -106,13 +89,6 @@ function Detail() {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    if (id === "test") {
-      setLetter(mockLetter);
-      setReply(mockReply);
-      setUserId(99);
-      return;
-    }
-
     axios
       .get("/api/user/me", { withCredentials: true })
       .then((res) => setUserId(res.data.id))
@@ -120,8 +96,6 @@ function Detail() {
   }, [id]);
 
   useEffect(() => {
-    if (id === "test") return;
-
     axios
       .get(`/api/letters/${id}`, { withCredentials: true })
       .then((res) => setLetter(res.data))

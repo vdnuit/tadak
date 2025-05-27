@@ -12,10 +12,11 @@ import Navbar from "./layouts/Navbar";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const API_BASE = process.env.REACT_APP_API_BASE;
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/user/me", { withCredentials: true })
+      .get(`${API_BASE}/api/user/me`, { withCredentials: true })
       .then(() => setIsLoggedIn(true))
       .catch(() => setIsLoggedIn(false));
   }, []);

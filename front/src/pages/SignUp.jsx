@@ -70,7 +70,9 @@ function SignUp() {
     if (hasError) return;
 
     try {
-      const response = await fetch("http://localhost:8080/api/user/signup", {
+      const API_BASE = process.env.REACT_APP_API_BASE;
+
+      const response = await fetch(`${API_BASE}/api/user/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

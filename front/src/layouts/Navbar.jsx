@@ -72,9 +72,10 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const toggleDrawer = (open) => () => setDrawerOpen(open);
+  const API_BASE = process.env.REACT_APP_API_BASE;
 
   const handleLogout = () => {
-    fetch("http://localhost:8080/api/user/logout", {
+    fetch(`${API_BASE}/api/user/logout`, {
       method: "POST",
       credentials: "include",
     })

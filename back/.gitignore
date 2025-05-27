@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# spring boot settings
+src/main/resources/application.properties
+src/main/resources/application-prod.properties

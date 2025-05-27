@@ -55,6 +55,7 @@ const ListItemTitle = styled.div`
   font-weight: 600;
   font-size: 16px;
   margin-top: 0.1rem;
+  margin-bottom: -0.2rem;
   color: ${({ theme }) => theme.palette.common.white};
 
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm}px) {
@@ -65,10 +66,10 @@ const ListItemTitle = styled.div`
 const ListItemDescription = styled.div`
   font-weight: 400;
   font-size: 16px;
-  line-height: 0.6;
+  line-height: 1.3;
   color: ${({ theme }) => theme.palette.common.white};
   margin-top: 0rem;
-  text-indent: 1.5rem;
+  margin-left: 1.5rem;
   white-space: normal;
   word-break: keep-all;
 

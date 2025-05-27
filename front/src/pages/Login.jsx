@@ -56,8 +56,9 @@ function Login({ setIsLoggedIn }) {
       const params = new URLSearchParams();
       params.append("username", id);
       params.append("password", password);
+      const API_BASE = process.env.REACT_APP_API_BASE;
 
-      const response = await fetch("http://localhost:8080/api/user/login", {
+      const response = await fetch(`${API_BASE}/api/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

@@ -12,8 +12,10 @@ function Mypage() {
   const [sent, setSent] = useState([]);
 
   useEffect(() => {
+    const API_BASE = process.env.REACT_APP_API_BASE;
+
     axios
-      .get("http://localhost:8080/api/user/me", { withCredentials: true })
+      .get(`${API_BASE}/api/user/me`, { withCredentials: true })
       .then((res) => {
         const user = res.data;
         setUserId(user.id);
@@ -27,11 +29,13 @@ function Mypage() {
 
   const fetchLetters = async (id) => {
     try {
+      const API_BASE = process.env.REACT_APP_API_BASE;
+
       const [recvRes, sentRes] = await Promise.all([
-        axios.get("http://localhost:8080/api/letters/received", {
+        axios.get(`${API_BASE}/api/letters/received`, {
           withCredentials: true,
         }),
-        axios.get("http://localhost:8080/api/letters/sent", {
+        axios.get(`${API_BASE}/api/letters/sent`, {
           withCredentials: true,
         }),
       ]);

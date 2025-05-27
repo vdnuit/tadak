@@ -46,7 +46,7 @@ function MessageBox({ type, title, messages }) {
             key={msg.id}
             id={msg.id}
             title={msg.title}
-            sender={type === "received" ? msg.senderName : msg.receiverName}
+            sender={msg.sender}
             createdAt={msg.createdAt}
           />
         ))}

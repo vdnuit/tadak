@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -7,8 +12,37 @@ import Write from "./pages/Write";
 import MyPage from "./pages/Mypage";
 import Detail from "./pages/Detail";
 import Footer from "./layouts/Footer";
-import axios from "axios";
 import Navbar from "./layouts/Navbar";
+import axios from "axios";
+import { initGA, logPageView } from "./Analytics";
+
+// 페이지뷰 추적용 컴포넌트
+function AnalyticsTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    initGA(); // 앱 시작 시 GA 초기화 (한 번만)
+  }, []);
+
+  useEffect(() => {
+    logPageView(location.pathname + location.search);
+  }, [location]);
+
+  return null;
+}
+
+function AppRoutes({ isLoggedIn, setIsLoggedIn }) {
+  return (
+    <Routes>
+      <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
+      <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/write" element={<Write />} />
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/detail/:id" element={<Detail />} />
+    </Routes>
+  );
+}
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,6 +57,7 @@ function App() {
 
   return (
     <Router>
+      <AnalyticsTracker />
       <div
         style={{
           display: "flex",
@@ -31,19 +66,8 @@ function App() {
         }}
       >
         <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-
         <div style={{ flex: "1" }}>
-          <Routes>
-            <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
-            <Route
-              path="/login"
-              element={<Login setIsLoggedIn={setIsLoggedIn} />}
-            />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/write" element={<Write />} />
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="/detail/:id" element={<Detail />} />
-          </Routes>
+          <AppRoutes isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
         </div>
         <Footer />
       </div>

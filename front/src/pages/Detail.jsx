@@ -81,6 +81,11 @@ const TextArea = styled.textarea`
   letter-spacing: -0.06em;
 `;
 
+const ContentText = styled.div`
+  white-space: pre-line;
+  margin-bottom: 0.5rem;
+`;
+
 function Detail() {
   const { id } = useParams();
   const [letter, setLetter] = useState(null);
@@ -141,7 +146,7 @@ function Detail() {
       </Meta>
 
       <MessageBox>
-        <div style={{ marginBottom: "0.5rem" }}>{letter.content}</div>
+        <ContentText>{letter.content}</ContentText>
         <div style={{ textAlign: "right", fontSize: "0.85rem", opacity: 0.8 }}>
           {letter.sender} / {formatDate(letter.createdAt)}
         </div>
@@ -149,7 +154,7 @@ function Detail() {
 
       {reply ? (
         <ReplyBox>
-          <div style={{ marginBottom: "0.5rem" }}>{reply.content}</div>
+          <ContentText>{reply.content}</ContentText>
           <div
             style={{ textAlign: "right", fontSize: "0.85rem", opacity: 0.8 }}
           >

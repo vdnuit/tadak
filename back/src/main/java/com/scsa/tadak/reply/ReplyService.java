@@ -2,6 +2,7 @@ package com.scsa.tadak.reply;
 
 import com.scsa.tadak.letter.Letter;
 import com.scsa.tadak.letter.LetterRepository;
+import com.scsa.tadak.notification.PushNotificationService;  // ✅ 추가
 import com.scsa.tadak.user.SiteUser;
 import com.scsa.tadak.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
     private final LetterRepository letterRepository;
     private final UserRepository userRepository;
+    private final PushNotificationService pushNotificationService;  // ✅ 추가
 
     public ReplyDto writeReply(Long letterId, Long replierId, String content) {
         Letter letter = letterRepository.findById(letterId)
@@ -36,6 +38,10 @@ public class ReplyService {
                 .build();
 
         Reply saved = replyRepository.save(reply);
+
+        // ✅ 푸시 알림 발송
+        SiteUser originalSender = letter.getSender();
+        pushNotificationService.sendReplyNotification(originalSender, letter.getTitle());
 
         return new ReplyDto(saved.getReplyId(), saved.getContent(), saved.getReplier().getUsername(), saved.getCreatedAt());
     }

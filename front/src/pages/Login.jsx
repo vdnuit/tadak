@@ -4,6 +4,7 @@ import styled from "styled-components";
 import AuthHeader from "../components/AuthHeader";
 import Button from "../components/Button";
 import AuthTextField from "../components/AuthTextField"; // ✅ 변경된 부분
+import { registerServiceWorker } from "../serviceWorkerRegistration"; // 경로는 실제 파일 위치에 맞게 조정
 
 const LoginContainer = styled.div`
   margin: 0 auto;
@@ -69,6 +70,8 @@ function Login({ setIsLoggedIn }) {
 
       if (response.ok) {
         setIsLoggedIn(true);
+        // 로그인 후 푸시 구독 재등록
+        registerServiceWorker();
         alert("로그인 성공");
         navigate("/");
       } else {

@@ -33,6 +33,4 @@ public class UserService implements UserDetailsService {  // ✅ 인터페이스
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
-
-    // ❌ 더 이상 직접 로그인 검증용 verify()는 필요하지 않음
 }

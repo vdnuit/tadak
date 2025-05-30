@@ -15,6 +15,7 @@ import Footer from "./layouts/Footer";
 import Navbar from "./layouts/Navbar";
 import axios from "axios";
 import { initGA, logPageView } from "./Analytics";
+import { registerServiceWorker } from "./serviceWorkerRegistration";
 
 // 페이지뷰 추적용 컴포넌트
 function AnalyticsTracker() {
@@ -53,6 +54,8 @@ function App() {
       .get(`${API_BASE}/api/user/me`, { withCredentials: true })
       .then(() => setIsLoggedIn(true))
       .catch(() => setIsLoggedIn(false));
+
+    registerServiceWorker(); // 푸시 등록 시도
   }, []);
 
   return (

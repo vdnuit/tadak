@@ -12,7 +12,7 @@ public class FrontendController {
             "/signup", 
             "/write", 
             "/mypage", 
-            "/detail"   // 필요한 클라이언트 라우트만 명시
+            "/detail"
     })
     public String forward() {
         return "forward:/index.html";
